@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Star } from 'lucide-react'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+
+const BarTooltip = ({ active, payload }) => {
+  if (!active || !payload?.length) return null
+  return (
+    <div style={{
+      background: 'var(--color-surface-nav)', border: '1px solid var(--color-border-mid)',
+      borderRadius: '3px', padding: '0.625rem 0.875rem', fontSize: '0.8125rem',
+    }}>
+      <p style={{ color: 'var(--color-text-muted)' }}>Avg Rating: <span style={{ color: 'var(--color-gold)', fontWeight: 700 }}>{payload[0].value?.toFixed(2)}</span></p>
+    </div>
+  )
+}
 
 const DirectorStarPower = () => {
   const [data, setData] = useState(null)
@@ -9,60 +20,77 @@ const DirectorStarPower = () => {
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/directors-stars')
-      .then(res => {
-        setData(res.data)
-        setLoading(false)
-      })
-      .catch(err => console.error(err))
+      .then(res => { setData(res.data); setLoading(false) })
+      .catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="flex h-full items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div></div>
+  if (loading) return <div className="loading-screen"><div className="spinner"></div><span>Loading director data…</span></div>
+
+  const directors = data?.topDirectors ?? []
+  const ranked = [...directors].sort((a, b) => b.avgRating - a.avgRating)
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Director & Star Power</h1>
-        <p className="text-textMuted">Identify high-ROI creative talent based on historical consistency and average ratings.</p>
+    <div style={{ animation: 'fadeIn 0.4s ease-out' }}>
+      <div style={{ marginBottom: '2rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--color-border)' }}>
+        <h1 className="page-title">Director & Star Power</h1>
+        <p className="page-sub">Ranking creative talent by average rating and consistency score.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="premium-card h-[500px] flex flex-col">
-          <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-            <Star className="text-warning" size={20} />
-            Top Consistent Directors
-          </h3>
-          <div className="flex-1 overflow-y-auto pr-2 space-y-4">
-            {data.topDirectors.map((dir, idx) => (
-              <div key={idx} className="bg-surface/50 p-4 rounded-lg border border-white/5">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-bold text-lg">{dir.name}</p>
-                  <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-                    {dir.avgRating.toFixed(1)} Avg
-                  </span>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+
+        {/* Ranked list */}
+        <div className="card">
+          <p className="section-title">Consistency Leaderboard</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+            {ranked.map((dir, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: '0.875rem',
+                padding: '0.875rem 0',
+                borderBottom: i < ranked.length - 1 ? '1px solid var(--color-border)' : 'none',
+              }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-dim)', fontWeight: 700, width: 20, textAlign: 'right' }}>
+                  {i + 1}
+                </span>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '0.125rem' }}>{dir.name}</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                    {dir.films} films · consistency ±{dir.consistency.toFixed(2)}
+                  </p>
                 </div>
-                <div className="flex gap-4 text-sm text-textMuted">
-                  <p>Films: <span className="text-white">{dir.films}</span></p>
-                  <p>Consistency (± std dev): <span className="text-success">{dir.consistency.toFixed(2)}</span></p>
-                </div>
+                <span style={{
+                  background: 'var(--color-gold-dim)',
+                  color: 'var(--color-gold)',
+                  fontWeight: 800,
+                  fontSize: '1rem',
+                  padding: '0.2rem 0.625rem',
+                  borderRadius: '3px',
+                  letterSpacing: '-0.01em',
+                }}>
+                  ★ {dir.avgRating.toFixed(1)}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="premium-card h-[500px]">
-          <h3 className="text-lg font-semibold mb-6">Star Power Index</h3>
-          <ResponsiveContainer width="100%" height="90%">
-            <BarChart data={data.topDirectors} layout="vertical" margin={{ top: 20, right: 30, left: 40, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} />
-              <XAxis type="number" domain={[0, 10]} stroke="#94a3b8" />
-              <YAxis dataKey="name" type="category" stroke="#94a3b8" width={100} />
-              <Tooltip 
-                contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', borderRadius: '0.5rem', color: '#f8fafc' }}
-                cursor={{ fill: '#334155', opacity: 0.4 }}
-              />
-              <Bar dataKey="avgRating" fill="#8b5cf6" radius={[0, 4, 4, 0]} barSize={30} />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* Bar chart */}
+        <div className="card">
+          <p className="section-title">Star Power Index</p>
+          <div style={{ height: '340px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={ranked} layout="vertical" margin={{ top: 4, right: 24, left: 10, bottom: 4 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" horizontal={false} />
+                <XAxis type="number" domain={[0, 10]} stroke="var(--color-text-dim)" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis dataKey="name" type="category" stroke="var(--color-text-dim)" fontSize={11} tickLine={false} axisLine={false} width={130} />
+                <Tooltip content={<BarTooltip />} cursor={{ fill: 'var(--color-surface-nav)' }} />
+                <Bar dataKey="avgRating" radius={[0, 2, 2, 0]} barSize={22}>
+                  {ranked.map((_, index) => (
+                    <Cell key={`cell-${index}`} fill={index === 0 ? 'var(--color-gold)' : 'var(--color-blue)'} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>

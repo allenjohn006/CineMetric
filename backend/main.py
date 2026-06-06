@@ -88,7 +88,7 @@ def get_audience_engagement(genre: str = None):
         filtered_df = df[df['Primary_Genre'] == genre]
         
     # Scatter data points
-    scatter_data = filtered_df[['primaryTitle', 'numVotes', 'averageRating']].to_dict('records')
+    scatter_data = filtered_df[['primaryTitle', 'numVotes', 'averageRating', 'Certificate']].to_dict('records')
     
     # Certificate effect on audience size
     cert_effect = df.groupby('Certificate').agg(

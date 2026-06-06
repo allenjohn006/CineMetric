@@ -1,55 +1,91 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, PieChart, Users, Star, TrendingUp, Clock } from 'lucide-react'
+import {
+  LayoutDashboard, BarChart2, Users, Star,
+  TrendingUp, Clock, Clapperboard
+} from 'lucide-react'
 
-const Sidebar = () => {
-  const navItems = [
-    { name: 'Executive Overview', path: '/', icon: <LayoutDashboard size={20} /> },
-    { name: 'Genre Intelligence', path: '/genre-intelligence', icon: <PieChart size={20} /> },
-    { name: 'Audience Engagement', path: '/audience-engagement', icon: <Users size={20} /> },
-    { name: 'Director & Star Power', path: '/director-star-power', icon: <Star size={20} /> },
-    { name: 'Content ROI Simulator', path: '/content-roi-simulator', icon: <TrendingUp size={20} /> },
-    { name: 'Time Intelligence', path: '/time-intelligence', icon: <Clock size={20} /> },
-  ]
+const navItems = [
+  { name: 'Overview',         path: '/dashboard',             icon: LayoutDashboard },
+  { name: 'Genre Matrix',     path: '/genre-intelligence',    icon: BarChart2 },
+  { name: 'Audience',         path: '/audience-engagement',   icon: Users },
+  { name: 'Directors',        path: '/director-star-power',   icon: Star },
+  { name: 'ROI Simulator',    path: '/content-roi-simulator', icon: TrendingUp },
+  { name: 'Time Intelligence', path: '/time-intelligence',    icon: Clock },
+]
 
-  return (
-    <div className="w-64 glass-panel border-l-0 border-t-0 border-b-0 rounded-none h-full flex flex-col relative z-20">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent mb-1 tracking-tight">
-          CineMetric
-        </h1>
-        <p className="text-xs text-textMuted uppercase tracking-wider font-semibold">Content Intelligence</p>
+const Sidebar = () => (
+  <aside style={{
+    width: '220px',
+    minWidth: '220px',
+    background: 'var(--color-surface)',
+    borderRight: '1px solid var(--color-border)',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflow: 'hidden',
+  }}>
+    {/* Logo */}
+    <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid var(--color-border)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <Clapperboard size={18} color="var(--color-gold)" />
+        <span style={{
+          fontSize: '1.125rem',
+          fontWeight: 800,
+          color: 'var(--color-text)',
+          letterSpacing: '-0.02em',
+        }}>Cine<span style={{ color: 'var(--color-gold)' }}>Metric</span></span>
       </div>
-      
-      <nav className="flex-1 mt-6">
-        <ul className="space-y-2 px-4">
-          {navItems.map((item) => (
-            <li key={item.name}>
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                    isActive 
-                      ? 'bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' 
-                      : 'text-textMuted hover:bg-white/5 hover:text-text'
-                  }`
-                }
-              >
-                {item.icon}
-                <span className="font-medium text-sm">{item.name}</span>
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      
-      <div className="p-6 mt-auto">
-        <div className="glass-panel p-4 rounded-xl text-xs text-textMuted text-center border-white/5 bg-black/20">
-          Powered by ML<br />IMDB Dataset Analysis
-        </div>
-      </div>
+      <p style={{
+        fontSize: '0.625rem',
+        color: 'var(--color-text-dim)',
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+        marginTop: '0.25rem',
+        fontWeight: 500,
+      }}>Content Intelligence</p>
     </div>
-  )
-}
+
+    {/* Nav */}
+    <nav style={{ flex: 1, overflowY: 'auto', padding: '0.75rem 0.75rem' }}>
+      <p style={{
+        fontSize: '0.625rem',
+        color: 'var(--color-text-dim)',
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+        fontWeight: 600,
+        padding: '0.5rem 0.5rem 0.375rem',
+      }}>Analytics</p>
+      {navItems.map(({ name, path, icon: Icon }) => (
+        <NavLink
+          key={path}
+          to={path}
+          className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+          style={{ marginBottom: '2px', display: 'flex' }}
+        >
+          <Icon size={15} />
+          <span>{name}</span>
+        </NavLink>
+      ))}
+    </nav>
+
+    {/* Footer */}
+    <div style={{
+      padding: '1rem 1.25rem',
+      borderTop: '1px solid var(--color-border)',
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.375rem',
+        marginBottom: '0.25rem',
+      }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-success)' }}></div>
+        <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>Backend Connected</span>
+      </div>
+      <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-dim)' }}>IMDB Dataset · 368K Records</p>
+    </div>
+  </aside>
+)
 
 export default Sidebar
