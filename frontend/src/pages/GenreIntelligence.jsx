@@ -106,7 +106,7 @@ const GenreIntelligence = () => {
             <Tooltip content={<ChartTooltip />} />
             <ReferenceLine x={medVol} stroke="var(--color-border-mid)" strokeDasharray="4 4" />
             <ReferenceLine y={medRating} stroke="var(--color-border-mid)" strokeDasharray="4 4" />
-            <Scatter name="Genres" data={processedData} shape={<CustomDot />} />
+            <Scatter name="Genres" data={processedData} shape={CustomDot} />
           </ScatterChart>
         </ResponsiveContainer>
       </div>

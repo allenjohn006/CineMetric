@@ -84,7 +84,7 @@ const AudienceEngagement = () => {
                   stroke="var(--color-text-dim)" fontSize={11} tickLine={false} axisLine={false}
                 />
                 <Tooltip content={<ScatterTooltip />} />
-                <Scatter data={data?.scatterData ?? []} shape={<CustomDot />} />
+                <Scatter data={data?.scatterData ?? []} shape={CustomDot} />
               </ScatterChart>
             </ResponsiveContainer>
           </div>
