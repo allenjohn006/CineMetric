@@ -1,108 +1,251 @@
-# CineMetric - Enterprise Content Intelligence Dashboard
+#  CineMetric — Enterprise Content Intelligence Dashboard
 
-![CineMetric Dashboard](https://img.shields.io/badge/CineMetric-Intelligence-blue?style=for-the-badge)
+![CineMetric](https://img.shields.io/badge/CineMetric-Enterprise%20Intelligence-F5C518?style=for-the-badge&logo=imdb&logoColor=black)
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=flat-square&logo=python)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=flat-square&logo=fastapi)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-F7931E?style=flat-square&logo=scikit-learn)
 
-CineMetric is a full-stack analytics dashboard designed for OTT platforms, film studios, and content analysts. It turns historical IMDB data into actionable acquisition signals and predicts the Expected Rating and ROI of future content before it is greenlit.
-
-## Features
-
-- **Executive Overview**: KPI cards featuring total movies, average ratings, top performing genres, and historic quality trends.
-- **Genre Intelligence (BCG Matrix)**: A 4-quadrant scatter plot (Stars, Cash Cows, Niche Gems, Dogs) mapping production volume against average ratings to identify highly profitable genres.
-- **Audience Engagement**: Interactive votes vs. rating correlation with breakdowns on certificate/MPAA effects on audience sizes.
-- **Director & Star Power**: Highlighting consistent top-performing directors and tracking star power metrics.
-- **Time Intelligence**: Historic trend charts comparing decade-by-decade movie releases and their quality scores.
-- **Content ROI Simulator (ML Model)**: Real-time prediction tool where users input target features (Genre, Runtime, Certificate) and our Scikit-Learn RandomForestRegressor predicts the expected rating and issues a Green/Yellow/Red investment signal.
+> **CineMetric** transforms 368,000+ IMDB records into actionable acquisition signals — helping OTT platforms, studios, and content analysts make data-driven greenlighting decisions.
 
 ---
 
-## Tech Stack
+##  UI Preview
 
-- **Frontend**: React.js, Vite, TailwindCSS (v4), Recharts
-- **Backend**: FastAPI (Python), Uvicorn, Pandas
-- **Machine Learning**: Scikit-Learn, Joblib, Numpy
-- **Data Processing**: FastParquet, PyArrow
+### Landing Page
+![Landing Page](images/Landing%20page.png)
+
+### Six Intelligence Modules
+![Six Intelligence Modules](images/Six%20Intelligence.png)
 
 ---
 
-## Folder Structure
+##  Dashboard Pages
+
+### 1. Executive Overview
+![Executive Overview](images/Executive%20Overview.png)
+> High-level KPI cards: 9,739 curated titles · Global Avg Rating 5.98 · Top Genre: Drama · Most Voted: The Dark Knight. Includes a full Content Quality Trend line chart from 1917 to 2026.
+
+---
+
+### 2. Genre Intelligence (BCG Matrix)
+![Genre Intelligence](images/Genre%20Intelligence.png)
+> Every genre plotted across a 4-quadrant BCG scatter chart — **Stars** (Gold), **Cash Cows** (Blue), **Niche Gems** (Purple), **Dogs** (Red) — mapped by Production Volume vs. Average Rating.
+
+---
+
+### 3. Audience Engagement
+![Audience Engagement](images/Audience%20Engagement%20.png)
+> Votes vs. Rating scatter with certificate-based coloring ( G ·  PG-13 ·  R). Right panel shows Certificate Effect — R-rated films attract 3.7× more votes than G-rated titles.
+
+---
+
+### 4. Director & Star Power
+![Directors](images/Directors.png)
+> Consistency Leaderboard ranking top directors by average rating and output volume. Star Power Index horizontal bar highlights Christopher Nolan at ★ 8.5 as the benchmark.
+
+---
+
+### 5. Content ROI Simulator (ML)
+![ROI Simulator](images/ROI%20Simulator.png)
+> Input Genre + Runtime + Certificate → ML model returns a predicted IMDB rating and a **GREENLIGHT / CAUTION / AVOID** investment signal powered by a trained RandomForestRegressor.
+
+---
+
+### 6. Time Intelligence
+![Time Intelligence](images/Time%20Intelligence.png)
+> Decade-by-decade quality trend line across 12 decades. Peak Volume Era: **2010s** with 2,622 films. Avg rating peaked in the **1920s** at ~6.5 and has trended down as volume exploded.
+
+---
+
+##  Features
+
+| Module | What It Does |
+|---|---|
+| **Executive Overview** | KPI cards + quality trend line chart |
+| **Genre BCG Matrix** | 4-quadrant scatter: Stars / Cash Cows / Niche Gems / Dogs |
+| **Audience Engagement** | Votes vs. Rating scatter colored by MPAA certificate |
+| **Director Star Power** | Consistency leaderboard + Star Power Index bar chart |
+| **Content ROI Simulator** | ML-powered rating prediction + Green/Yellow/Red signal |
+| **Time Intelligence** | Decade-by-decade quality & volume trend analysis |
+
+---
+
+##  Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 18, Vite, TailwindCSS v4, Recharts, Axios |
+| **Backend** | FastAPI, Uvicorn, Pandas, PyArrow |
+| **Machine Learning** | Scikit-Learn (RandomForest), Joblib, NumPy |
+| **Data Format** | Apache Parquet (processed), CSV (raw IMDB) |
+
+---
+
+##  Folder Structure
 
 ```text
 CineMetric/
-├── backend/            # FastAPI python application
-│   └── main.py         # Primary API endpoints
-├── Data/               # Raw IMDB datasets and processed Parquet files
-├── doc/                # Comprehensive project documentation
-├── frontend/           # Vite React frontend application
-├── models/             # Serialized joblib ML models (Regressor & Classifier)
-├── scripts/            # Optional helper scripts
-├── preprocess_data.py  # End-to-end data processing and model training script
-└── README.md           # This file
+├── backend/                  # FastAPI Python application
+│   └── main.py               # All API endpoints
+├── Data/                     # Raw IMDB CSVs + processed Parquet file
+│   ├── title.basics.csv
+│   ├── title.ratings.csv
+│   ├── imdb_top_1000.csv
+│   └── processed_imdb_data.parquet
+├── doc/                      # Project documentation & analysis report
+│   ├── ANALYSIS_REPORT.md
+│   └── CODEBASE_ANALYSIS.md
+├── frontend/                 # Vite + React frontend
+│   ├── src/
+│   │   ├── pages/            # Dashboard page components
+│   │   ├── components/       # Sidebar, Layout
+│   │   ├── App.jsx
+│   │   └── index.css         # Design system (IMDB-inspired dark palette)
+│   └── package.json
+├── images/                   # UI screenshots
+├── models/                   # Serialized ML models (.joblib)
+│   ├── certificate_imputer.joblib
+│   ├── rating_predictor.joblib
+│   └── mappings.joblib
+├── preprocess_data.py        # End-to-end data pipeline + model training
+└── README.md
 ```
 
 ---
 
-## Setup & Installation
+##  Setup & Installation
 
-### 1. Backend & ML Pipeline Setup
+### Prerequisites
+- **Python** 3.9 or higher
+- **Node.js** 18 or higher
+- **npm** 9 or higher
 
-Ensure you have Python 3.9+ installed. Open a terminal in the root `CineMetric` folder.
+---
 
-**Step 1: Create a virtual environment**
+### Step 1 — Clone the Repository
+
 ```bash
+git clone https://github.com/allenjohn006/CineMetric.git
+cd CineMetric
+```
+
+---
+
+### Step 2 — Backend Setup
+
+**Create and activate a virtual environment:**
+
+```bash
+# Create the virtual environment
 python -m venv venv
+
+# Activate (Windows)
+.\venv\Scripts\activate
+
+# Activate (Mac / Linux)
+source venv/bin/activate
 ```
 
-**Step 2: Activate the virtual environment**
-- **Windows:** `.\venv\Scripts\activate`
-- **Mac/Linux:** `source venv/bin/activate`
+**Install Python dependencies:**
 
-**Step 3: Install Backend Dependencies**
 ```bash
-pip install fastapi uvicorn pandas scikit-learn pyarrow fastparquet joblib pydantic
+pip install fastapi uvicorn pandas scikit-learn pyarrow fastparquet joblib pydantic numpy
 ```
 
-**Step 4: Run Data Preprocessing (Optional if already trained)**
-*Note: Make sure your raw IMDB CSVs (`title.basics.csv`, `title.ratings.csv`, `imdb_top_1000.csv`) are placed in the `Data` directory.*
+**Run the data preprocessing pipeline** *(only needed once — skip if `Data/processed_imdb_data.parquet` and the `.joblib` model files already exist)*:
+
+>  Ensure `title.basics.csv`, `title.ratings.csv`, and `imdb_top_1000.csv` are placed inside the `Data/` directory before running.
+
 ```bash
 python preprocess_data.py
 ```
-This script will merge the datasets, train the Certificate Imputer and Rating Predictor models, and generate the necessary `.parquet` and `.joblib` files.
 
-### 2. Frontend Setup
-
-Open a **new** terminal in the `CineMetric/frontend` folder.
-
-**Step 1: Install Node Dependencies**
-Ensure you have Node.js 18+ installed.
-```bash
-npm install
-```
-*(Dependencies include React, TailwindCSS, Recharts, React Router, Axios, and Lucide Icons)*
+This script will:
+1. Merge the raw IMDB datasets
+2. Train a **Certificate Imputer** (RandomForestClassifier) on the Top-1000 dataset to label the 368K records
+3. Train a **Rating Predictor** (RandomForestRegressor) on the full processed dataset
+4. Export `Data/processed_imdb_data.parquet` and all `.joblib` model files
 
 ---
 
-## Running the Application
+### Step 3 — Frontend Setup
 
-To run the application, you need to run the backend and frontend simultaneously in two separate terminals.
+Open a new terminal and navigate to the `frontend` folder:
 
-### Terminal 1: Start the FastAPI Backend
-Ensure your virtual environment is activated in the root `CineMetric` folder.
 ```bash
+cd frontend
+npm install
+```
+
+---
+
+##  Running the Application
+
+You need **two terminals running simultaneously**.
+
+**Terminal 1 — Start the FastAPI Backend** (from the `CineMetric/` root):
+
+```bash
+# Make sure your venv is activated first
 uvicorn backend.main:app --reload
 ```
-*The API will start on `http://127.0.0.1:8000`*
 
-### Terminal 2: Start the React Frontend
-Navigate to the `CineMetric/frontend` folder.
+The API will be available at: `http://127.0.0.1:8000`
+
+**Terminal 2 — Start the React Frontend** (from the `CineMetric/frontend/` folder):
+
 ```bash
 npm run dev
 ```
-*The frontend will start on `http://localhost:5173`*
 
-Open your browser and navigate to `http://localhost:5173` to explore the CineMetric dashboard.
+The dashboard will be available at: `http://localhost:5173`
+
+Open your browser and navigate to **`http://localhost:5173`** to explore CineMetric.
 
 ---
 
-## Documentation
+##  API Endpoints
 
-Detailed documentation regarding the system architecture, API endpoints, and machine learning pipeline can be found in the `/doc` folder.
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/kpis` | Executive KPI data (totals, top genre, quality trend) |
+| `GET` | `/api/genre-matrix` | BCG Matrix data (volume vs rating by genre) |
+| `GET` | `/api/audience-engagement` | Votes vs. Rating scatter + certificate effect |
+| `GET` | `/api/directors-stars` | Director leaderboard and star power index |
+| `GET` | `/api/time-intelligence` | Decade-by-decade quality and volume trend |
+| `POST` | `/api/predict-roi` | ML rating prediction (Genre + Runtime + Certificate) |
+
+---
+
+## 📊 Data Analysis Highlights
+
+Key findings from the 368,000-record IMDB dataset (see `doc/ANALYSIS_REPORT.md` for the full report):
+
+- **Drama dominates** with the highest production volume (2,800+ films) — a true Cash Cow genre
+- **Documentary is a Star** — high average rating (≈7.1) with significant volume
+- **R-rated films attract 3.7× more votes** than G-rated content (12,617 vs 3,360 avg votes)
+- **Content quality peaked in the 1920s** (avg rating ~6.5) and has declined as volume scaled up
+- **2010s was the peak production decade** with 2,622 films — highest in history
+- **Christopher Nolan** leads the Director Star Power Index with ★ 8.5 avg rating across 11 films
+
+---
+
+##  Documentation
+
+Detailed documentation is in the `/doc` folder:
+
+- [`ANALYSIS_REPORT.md`](doc/ANALYSIS_REPORT.md) — Full EDA findings, insights, and business recommendations
+- [`CODEBASE_ANALYSIS.md`](doc/CODEBASE_ANALYSIS.md) — Architecture, API reference, and ML pipeline details
+
+---
+
+##  Author
+
+**Allen John Isac** — Internship Task 2: IMDB Dataset Full-Stack + ML Dashboard
+
+---
+
+##  License
+
+This project is built for educational and internship purposes using publicly available IMDB data.

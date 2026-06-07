@@ -82,7 +82,7 @@ const Landing = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <a href="https://github.com/allenjohn006/CineMetric" target="_blank" rel="noreferrer"
-             style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', textDecoration: 'none', fontWeight: 500 }}>
+            style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', textDecoration: 'none', fontWeight: 500 }}>
             GitHub
           </a>
           <button className="btn-gold" onClick={() => navigate('/dashboard')} style={{ fontSize: '0.8125rem', padding: '0.4rem 1.1rem' }}>
@@ -123,9 +123,19 @@ const Landing = () => {
           color: 'var(--color-text)',
           marginBottom: '1.5rem',
         }}>
-          Data-Driven Decisions<br />
-          <span style={{ color: 'var(--color-gold)' }}>Before You Greenlight.</span>
+          Cine <span style={{ color: 'var(--color-gold)' }}>Metric</span><br />
         </h1>
+
+        <h2 style={{
+          fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+          fontWeight: 800,
+          lineHeight: 1.05,
+          letterSpacing: '-0.04em',
+          color: 'var(--color-text)',
+          marginBottom: '1.5rem',
+        }}>
+          Data-Driven Decisions For Modern OTT.
+        </h2>
 
         <p style={{
           fontSize: '1.125rem',
