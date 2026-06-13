@@ -1,4 +1,4 @@
-#  CineMetric - Task-3 (IMDB Dataset Analysis)
+#  CineMetric - Task-2 (IMDB Dataset Analysis)
 ## Enterprise Content Intelligence Dashboard
 
 ![CineMetric](https://img.shields.io/badge/CineMetric-Enterprise%20Intelligence-F5C518?style=for-the-badge&logo=imdb&logoColor=black)
